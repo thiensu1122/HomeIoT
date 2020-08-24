@@ -4,17 +4,16 @@
 #include "DataPackage.h"
 #include "NRF24Message.h"
 #include "NRF24.h"
+#include "MQTT.h"
+ 
 
- 
-String apiKey = "KBD1JSZTUKCXJ15V";
- 
 const char* ssid = "Bao2G";
 const char* password = "bao0123456";
+
+
  
-WiFiClient client;
 int gatewayID = EEPROM.read(0);
  
-const char* server = "api.thingspeak.com";
 
 //MISO connects to pin D6 of the NodeMCU
 //MOSI connects to pin D7 of the NodeMCU
@@ -48,11 +47,6 @@ void loop()
     memset(buf,0,sizeof(buf));
     if (nrf24.recv(buf, &len))
     {
-      for(int i = 0 ;i< len;i++){
-        Serial.print(buf[i]);
-        Serial.print("|");
-      }
-      
       // Send a reply
       uint8_t sdata[] = "Data Received.";
       nrf24.send(sdata, sizeof(sdata));
@@ -64,10 +58,4 @@ void loop()
       
     }
   } 
-  else 
-  {
- 
-    //Serial.print("No New Message");
-  }
-//delay(15000);
 }
