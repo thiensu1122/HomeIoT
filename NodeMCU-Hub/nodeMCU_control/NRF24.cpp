@@ -1,6 +1,38 @@
 #include "NRF24.h"
 #include "NRF24Message.h"
-void setupNRF(RH_NRF24 nrf24){
+
+
+//MISO connects to pin D6 of the NodeMCU
+//MOSI connects to pin D7 of the NodeMCU
+//SCK connects to pin D5 of the NodeMCU
+//CE connects to pin D4 of the NodeMCU
+//CSN connects to pin D2 of the NodeMCU
+RH_NRF24 nrf24(2, 4); // use this for NodeMCU Amica/AdaFruit Huzzah ESP8266 Feather
+
+void NRFLoop(){
+if (nrf24.available())
+  {
+    Serial.println("something");
+    // Should be a message for us now
+    uint8_t buf[RH_NRF24_MAX_MESSAGE_LEN];
+    uint8_t len = sizeof(DataPackage);
+    memset(buf,0,sizeof(buf));
+    if (nrf24.recv(buf, &len))
+    {
+      // Send a reply
+      uint8_t sdata[] = "Data Received.";
+      nrf24.send(sdata, sizeof(sdata));
+      nrf24.waitPacketSent();
+      DataPackage dataPackage;
+      memcpy( &dataPackage, buf, sizeof( DataPackage ) );
+      NRF24Message nrf24Message(dataPackage);
+      nrf24Message.printData();
+      
+    }
+  } 
+}
+
+void setupNRF(){
   
   if (!nrf24.init()) 
   {
@@ -26,7 +58,7 @@ void printMessage(byte *message, uint8_t length){
   Serial.println();
 }
 
-void sendMessage(RH_NRF24 nrf24, NRF24Message nrf24Message){
+void sendMessage(NRF24Message nrf24Message){
   nrf24Message.printData();
   uint8_t message[sizeof(DataPackage)]; 
   memset(message,0,sizeof(message));

@@ -5,7 +5,7 @@
 
 
 
-#define MQTTINTERVAL  3000
+#define MQTTINTERVAL  5000
 #define MQTTHUB "hub"
 #define MQTTSERVER "server"
 #define MQTTDEVICE "device"

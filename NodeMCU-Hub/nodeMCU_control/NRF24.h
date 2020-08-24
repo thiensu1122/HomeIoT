@@ -10,5 +10,7 @@
 
 const byte address[6] = "00001";
 
-void setupNRF(RH_NRF24 nrf24);
-void sendMessage(RH_NRF24 nrf24, NRF24Message data);
+
+void setupNRF();
+void NRFLoop();
+void sendMessage(NRF24Message data);
