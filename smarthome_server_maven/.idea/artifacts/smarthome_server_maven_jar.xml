@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="smarthome_server_maven:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/smarthome_server_maven_jar</output-path>
+    <root id="archive" name="smarthome_server_maven.jar">
+      <element id="module-output" name="smarthome_server_maven" />
+    </root>
+  </artifact>
+</component>
