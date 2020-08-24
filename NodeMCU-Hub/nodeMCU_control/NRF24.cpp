@@ -1,6 +1,7 @@
 #include "NRF24.h"
 #include "NRF24Message.h"
 void setupNRF(RH_NRF24 nrf24){
+  
   if (!nrf24.init()) 
   {
     Serial.println("init failed");

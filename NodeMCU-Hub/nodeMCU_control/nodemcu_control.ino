@@ -26,11 +26,6 @@ RH_NRF24 nrf24(2, 4); // use this for NodeMCU Amica/AdaFruit Huzzah ESP8266 Feat
 void setup()
 {
   Serial.begin(115200);
-  Serial.print("Receiver Started, ID: ");
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
-  Serial.print(gatewayID);
-  Serial.println();
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) 
   {
@@ -39,9 +34,7 @@ void setup()
   }
   Serial.println("");
   Serial.println("WiFi connected");
-  nrf24.init();
-  nrf24.setChannel(3);
-  nrf24.setRF(RH_NRF24::DataRate2Mbps, RH_NRF24::TransmitPower0dBm);
+  setupNRF(nrf24);
 }
  
 void loop()
