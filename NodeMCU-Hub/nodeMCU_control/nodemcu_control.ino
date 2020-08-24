@@ -33,11 +33,13 @@ void setup()
   }
   Serial.println("");
   Serial.println("WiFi connected");
+  connectMQTT();
   setupNRF(nrf24);
 }
  
 void loop()
 {
+  mqttLoop();
   if (nrf24.available())
   {
     Serial.println("something");

@@ -116,4 +116,5 @@ void statusLoop(){
 void mqttLoop(){
   mqttClient.loop();
   checkMQTTConnect();
+  statusLoop();
 }
