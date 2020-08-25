@@ -3,14 +3,14 @@
 #include <ESP8266WiFi.h>
 #include "DataPackage.h"
 #include "NRF24Message.h"
-#include "NRF24.h"
+
 #include "MQTT.h"
  
 
 const char* ssid = "Bao2G";
 const char* password = "bao0123456";
 
- 
+NRF24 nrf24 = NRF24();
 int gatewayID = EEPROM.read(0);
  
 void setup()
@@ -25,12 +25,12 @@ void setup()
   Serial.println("");
   Serial.println("WiFi connected");
   connectMQTT();
-  setupNRF();
+  nrf24.setupNRF();
 }
  
 void loop()
 {
   mqttLoop();  
-  NRFLoop();
+  nrf24.NRFLoop();
   
 }
