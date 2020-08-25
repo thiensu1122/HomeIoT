@@ -29,7 +29,6 @@ public:
 	boolean NRFLoop() {
 		if (_nrf24.available())
 		{
-			Serial.println("something");
 			// Should be a message for us now
 			uint8_t buf[RH_NRF24_MAX_MESSAGE_LEN];
 			uint8_t len = sizeof(DataPackage);
@@ -43,7 +42,7 @@ public:
 				DataPackage dataPackage;
 				memcpy( &dataPackage, buf, sizeof( DataPackage ) );
 				nrf24Message.setDataPackage(dataPackage);
-				nrf24Message.printData();
+//				nrf24Message.printData();
 			}
 			return true;
 		} else {
@@ -90,7 +89,9 @@ public:
 		}
 		delay(3000);
 	}
-
+	NRF24Message getNRF24Message(){
+		return nrf24Message;
+	}
 	
 
 };

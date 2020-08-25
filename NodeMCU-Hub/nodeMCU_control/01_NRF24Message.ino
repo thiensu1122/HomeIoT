@@ -32,6 +32,14 @@ public:
 		value2 = getFloatFromPackageData(dataPackage.value2_1,dataPackage.value2_2 ,dataPackage.value2_3, dataPackage.value2_4);
 		value3 = getStringFromPackageData(dataPackage.value3_1,dataPackage.value3_2 ,dataPackage.value3_3, dataPackage.value3_4,dataPackage.value3_5,dataPackage.value3_6 ,dataPackage.value3_7, dataPackage.value3_8);
 	}
+
+	void updateValues(NRF24Message nrf24Message) {
+		code = nrf24Message.code;
+		status = nrf24Message.status;
+		value1 = nrf24Message.value1;
+		value2 = nrf24Message.value2;
+		value3 = nrf24Message.value3;
+	}
 	
 	void getMessageBytes(uint8_t *message, uint8_t length) {
 
