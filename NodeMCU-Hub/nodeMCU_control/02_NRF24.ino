@@ -1,5 +1,4 @@
 #include <RH_NRF24.h>
-#include "NRF24Message.h"
 
 class NRF24 {
 private:
@@ -9,6 +8,7 @@ private:
 	//CE connects to pin D4 of the NodeMCU
 	//CSN connects to pin D2 of the NodeMCU
 	RH_NRF24 _nrf24 = RH_NRF24(2, 4); // use this for NodeMCU Amica/AdaFruit Huzzah ESP8266 Feather
+	NRF24Message nrf24Message;
 public:
 	void setupNRF() {
 		if (!_nrf24.init())
@@ -26,7 +26,7 @@ public:
 
 	}
 
-	void NRFLoop() {
+	boolean NRFLoop() {
 		if (_nrf24.available())
 		{
 			Serial.println("something");
@@ -42,10 +42,12 @@ public:
 				_nrf24.waitPacketSent();
 				DataPackage dataPackage;
 				memcpy( &dataPackage, buf, sizeof( DataPackage ) );
-				NRF24Message nrf24Message(dataPackage);
+				nrf24Message.setDataPackage(dataPackage);
 				nrf24Message.printData();
-
 			}
+			return true;
+		} else {
+			return false;
 		}
 	}
 	void printMessage(byte *message, uint8_t length) {
@@ -88,5 +90,7 @@ public:
 		}
 		delay(3000);
 	}
+
+	
 
 };
