@@ -61,7 +61,7 @@ void clearMessageListStatus() {
 }
 
 static void mainMQTTCallback(char* topic, byte* payload, unsigned int length) {
-	Serial.print("Message arrived in topic: ");
+	//Serial.print("Message arrived in topic: ");
 	String strPayload = "";
 	String strTopic= "";
 	for (int i = 0; i < strlen(topic); i++) {

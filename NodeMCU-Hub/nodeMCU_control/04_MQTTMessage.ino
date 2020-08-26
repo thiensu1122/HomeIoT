@@ -36,7 +36,7 @@ public:
 		Serial.println(jsonPayload["sensorList"].size());
 		for(int i=0; i<messageListCount; i++) {
 			nrf24MessageList[i].setJsonData(jsonDeviceList[i]);
-			nrf24MessageList[i].printData();
+			//nrf24MessageList[i].printData();
 		}
 	}
 

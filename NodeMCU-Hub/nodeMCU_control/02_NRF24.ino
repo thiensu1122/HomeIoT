@@ -1,4 +1,9 @@
-#include <RH_NRF24.h>
+#include <SPI.h>
+#include <nRF24L01.h>
+#include <RF24.h>
+
+#define ARDUINOTONODEMCUCHANNEL 1
+#define NODEMCUTOARDUINOCHANNEL 2
 
 class NRF24 {
 private:
@@ -7,47 +12,69 @@ private:
 	//SCK connects to pin D5 of the NodeMCU
 	//CE connects to pin D4 of the NodeMCU
 	//CSN connects to pin D2 of the NodeMCU
-	RH_NRF24 _nrf24 = RH_NRF24(2, 4); // use this for NodeMCU Amica/AdaFruit Huzzah ESP8266 Feather
+
+
+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__)
+
+	RF24 radio = RF24(7, 8); // use this for NodeMCU Amica/AdaFruit Huzzah ESP8266 Feather
+	//Code in here will only be compiled if an Arduino Uno (or older) is used.
+#else
+
+	RF24 radio = RF24(2, 4); // use this for NodeMCU Amica/AdaFruit Huzzah ESP8266 Feather
+
+#endif
+	const byte addresses[2][6] = {"00001", "00002"};
 	NRF24Message nrf24Message;
 public:
-	void setupNRF() {
-		if (!_nrf24.init())
-		{
-			Serial.println("init failed");
-		}
-		// Defaults after init are 2.402 GHz (channel 2), 2Mbps, 0dBm
-		if (!_nrf24.setChannel(3))
-		{
-			Serial.println("setChannel failed");
-		}
-		if (!_nrf24.setRF(RH_NRF24::DataRate2Mbps, RH_NRF24::TransmitPower0dBm)) {
-			Serial.println("setRF failed");
-		}
 
+	void setupNRF() {
+
+		radio.begin();
+
+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__)
+		radio.openWritingPipe(addresses[1]); // 00002
+		radio.openReadingPipe(1, addresses[0]); // 00001
+#else
+		radio.openWritingPipe(addresses[0]); // 00001
+		radio.openReadingPipe(1, addresses[1]); // 00002
+#endif
+		radio.setPALevel(RF24_PA_MIN);
 	}
 
 	boolean NRFLoop() {
-		if (_nrf24.available())
+		radio.startListening();
+		if (radio.available())
 		{
 			// Should be a message for us now
-			uint8_t buf[RH_NRF24_MAX_MESSAGE_LEN];
+			uint8_t buf[32];
 			uint8_t len = sizeof(DataPackage);
 			memset(buf,0,sizeof(buf));
-			if (_nrf24.recv(buf, &len))
-			{
-				// Send a reply
-				uint8_t sdata[] = "Data Received.";
-				_nrf24.send(sdata, sizeof(sdata));
-				_nrf24.waitPacketSent();
-				DataPackage dataPackage;
-				memcpy( &dataPackage, buf, sizeof( DataPackage ) );
-				nrf24Message.setDataPackage(dataPackage);
-//				nrf24Message.printData();
-			}
+			radio.read(buf, len);
+
+			// Send a reply
+			DataPackage dataPackage;
+			memcpy( &dataPackage, buf, sizeof( DataPackage ) );
+			nrf24Message.setDataPackage(dataPackage);
+			nrf24Message.printData();
+
 			return true;
 		} else {
 			return false;
 		}
+
+//		delay(5);
+//		radio.startListening();
+//		if ( radio.available()) {
+//			//Serial.println("Something");
+//			while (radio.available()) {
+//				int angleV = 0;
+//				radio.read(&angleV, sizeof(angleV));
+//				Serial.println("Something");
+//			}
+//			delay(5);
+//			radio.stopListening();
+//
+//		}
 	}
 	void printMessage(byte *message, uint8_t length) {
 		for(int i = 0; i< length; i++) {
@@ -58,40 +85,26 @@ public:
 	}
 
 	void sendMessage(NRF24Message nrf24Message) {
+
 		nrf24Message.printData();
 		uint8_t message[sizeof(DataPackage)];
 		memset(message,0,sizeof(message));
 		nrf24Message.getMessageBytes(message,sizeof(DataPackage));
-		_nrf24.send(message, sizeof(DataPackage));
-		_nrf24.waitPacketSent();
 
-		// Now wait for a reply
+		delay(5);
+		radio.stopListening();
+		radio.write(&message, sizeof(DataPackage));
+		delay(5);
+		radio.startListening();
 
-		uint8_t buf[RH_NRF24_MAX_MESSAGE_LEN];
-		uint8_t len = sizeof(buf);
 
-		if (_nrf24.waitAvailableTimeout(2000))
-		{
-			// Should be a reply message for us now
-			if (_nrf24.recv(buf, &len))
-			{
-				Serial.print("got reply: ");
-				Serial.println((char*)buf);
-			}
-			else
-			{
-				Serial.println("recv failed");
-			}
-		}
-		else
-		{
-			Serial.println("No reply.");
-		}
-		delay(3000);
+
+
+
 	}
-	NRF24Message getNRF24Message(){
+	NRF24Message getNRF24Message() {
 		return nrf24Message;
 	}
-	
+
 
 };

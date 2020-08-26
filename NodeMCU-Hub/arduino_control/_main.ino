@@ -32,4 +32,5 @@ void loop()
 	nrf24Message.setValue2(-22);
 	nrf24Message.setValue3("12345");
 	nrf24.sendMessage(nrf24Message);
+	delay(3000);
 }
