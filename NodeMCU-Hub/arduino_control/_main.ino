@@ -1,4 +1,3 @@
-#include "NRF24Message.h"
 #include "DHT.h"
 #include <EEPROM.h>
 

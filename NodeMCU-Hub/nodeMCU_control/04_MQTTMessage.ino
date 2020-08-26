@@ -11,7 +11,7 @@ private:
 	String directionCode;
 	int user_id;
 	int hub_id;
-	NRF24Message messageList[10];
+	NRF24Message nrf24MessageList[10];
 	uint8_t messageListCount;
 
 
@@ -35,9 +35,16 @@ public:
 		Serial.print("sizeeeeeeeee :" );
 		Serial.println(jsonPayload["sensorList"].size());
 		for(int i=0; i<messageListCount; i++) {
-			messageList[i].setJsonData(jsonDeviceList[i]);
-			messageList[i].printData();
+			nrf24MessageList[i].setJsonData(jsonDeviceList[i]);
+			nrf24MessageList[i].printData();
 		}
+	}
 
+	NRF24Message* getNRF24MessageList(){
+		return nrf24MessageList;
+	}
+
+	uint8_t getNRF24MessageListCount(){
+		return messageListCount;	
 	}
 };
