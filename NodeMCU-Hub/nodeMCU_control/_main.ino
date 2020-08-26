@@ -1,6 +1,7 @@
 
 #include <EEPROM.h>
 #include <ESP8266WiFi.h>
+#include <ArduinoJson.h>
 #include "DataPackage.h"
 
 #define devicesCount 5
@@ -34,7 +35,6 @@ void setup()
 	Serial.println("WiFi connected");
 	mqtt.connectMQTT();
 	nrf24.setupNRF();
-
 }
 
 void setupMessageList() {
@@ -49,19 +49,47 @@ void updateMessageList() {
 	for (int i = 0; i< devicesCount ; i++) {
 		if(nrf24MessageList[i].getDeviceID() == nrf24Message.getDeviceID()) {
 			nrf24MessageList[i].updateValues(nrf24Message);
-			nrf24MessageList[i].printData();
 		}
 	}
+}
+
+void clearMessageListStatus() {
+	for (int i = 0; i< devicesCount ; i++) {
+		nrf24MessageList[i].setStatus(-1);
+	}
+}
+
+static void mainMQTTCallback(char* topic, byte* payload, unsigned int length){
+	Serial.print("Message arrived in topic: ");
+	String strpayload = "";
+	String strTopic= "";
+	for (int i = 0; i < strlen(topic); i++) {
+		strTopic += topic[i];
+	}
+	Serial.println(strTopic);
+
+	Serial.print("Message:");
+	for (int i = 0; i < length; i++) {
+		//Serial.print((char)payload[i]);
+		strpayload += (char)payload[i];
+	}
+	Serial.println();
+
+	Serial.println(strpayload);
+
+	Serial.println();
+	Serial.println("-----------------------");
 }
 
 void loop()
 {
 	mqtt.mqttLoop();
+	if(mqtt.sendUpdateInfo(nrf24MessageList, devicesCount)) {
+		clearMessageListStatus();
+	}
 	if(nrf24.NRFLoop()) {
 		//got message from devices or sensors
 		nrf24Message = nrf24.getNRF24Message();
-		
 		updateMessageList();
 	}
-
 }

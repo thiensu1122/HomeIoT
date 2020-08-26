@@ -22,6 +22,11 @@ public:
 	}
 	NRF24Message(uint8_t device_id) {
 		this->device_id = device_id;
+		code = 0;
+		status = -1;
+		value1 = 0;
+		value2 = 0;
+		value3 = "";
 	}
 	
 	void setDataPackage(DataPackage dataPackage) {
