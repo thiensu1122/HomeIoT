@@ -5,6 +5,8 @@
 
 
 #define UPDATEINFOINTERVAL  5000
+#define mqttBuffer 1024
+
 #define MQTTHUB "hub"
 #define MQTTSERVER "server"
 #define MQTTDEVICE "device"
@@ -14,7 +16,7 @@
 #define HUBTOSERVER "0"
 #define TEMPSENSOR "52"
 #define CO2SENSOR "53"
-#define mqttBuffer 1024
+
 
 class MQTT {
 private:

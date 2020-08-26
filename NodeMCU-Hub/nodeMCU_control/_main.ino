@@ -15,12 +15,13 @@ const char* ssid = "Bao2G";
 const char* password = "bao0123456";
 NRF24Message nrf24MessageList[5];
 NRF24Message nrf24Message;
-NRF24 nrf24 = NRF24();
-MQTT mqtt = MQTT();
+MQTTMessage mqttmessage;
 
+NRF24 nrf24 = NRF24();
+MQTT mqtt = MQTT(); 
 int gatewayID = EEPROM.read(0);
 
-
+StaticJsonDocument<1024> jsonMQTT;
 
 void setup()
 {
@@ -61,24 +62,26 @@ void clearMessageListStatus() {
 
 static void mainMQTTCallback(char* topic, byte* payload, unsigned int length){
 	Serial.print("Message arrived in topic: ");
-	String strpayload = "";
+	String strPayload = "";
 	String strTopic= "";
 	for (int i = 0; i < strlen(topic); i++) {
 		strTopic += topic[i];
 	}
 	Serial.println(strTopic);
 
-	Serial.print("Message:");
+	
 	for (int i = 0; i < length; i++) {
 		//Serial.print((char)payload[i]);
-		strpayload += (char)payload[i];
+		strPayload += (char)payload[i];
 	}
-	Serial.println();
+	mqttmessage = MQTTMessage();
+	mqttmessage.setJsonMQTT(strPayload);
+	
+	// Deserialize the JSON document
+  	
+  	
 
-	Serial.println(strpayload);
-
-	Serial.println();
-	Serial.println("-----------------------");
+  	
 }
 
 void loop()

@@ -2,23 +2,28 @@
 #pragma once
 #include "Arduino.h"
 #include "DataPackage.h"
-
+#include <ArduinoJson.h>
 
 union FloatAsBytes {
 	float fval;
 	uint8_t bval[4];
 } floatAsBytes;
 
+union UnsignedIntAsBytes {
+	unsigned int uival;
+	uint8_t bval[2];
+} unsignedIntAsBytes;
+
 class NRF24Message {
 private:
-	uint8_t device_id;
+	uint8_t device_id; //////////// to do change to unsigned int 2 bytes
 	uint8_t code;
 	uint8_t status;
 	float value1;
 	float value2;
 	String value3;
 public:
-	NRF24Message(){
+	NRF24Message() {
 	}
 	NRF24Message(uint8_t device_id) {
 		this->device_id = device_id;
@@ -28,7 +33,7 @@ public:
 		value2 = 0;
 		value3 = "";
 	}
-	
+
 	void setDataPackage(DataPackage dataPackage) {
 		device_id = dataPackage.device_id;
 		code = dataPackage.code;
@@ -38,6 +43,15 @@ public:
 		value3 = getStringFromPackageData(dataPackage.value3_1,dataPackage.value3_2 ,dataPackage.value3_3, dataPackage.value3_4,dataPackage.value3_5,dataPackage.value3_6 ,dataPackage.value3_7, dataPackage.value3_8);
 	}
 
+	void setJsonData(JsonObject jsonData) {
+		device_id = jsonData["sensor_id"].as<uint8_t>();
+		code = jsonData["code"].as<uint8_t>();
+		status = jsonData["status"].as<uint8_t>();
+		value1 = jsonData["value1"].as<int>();
+		value2 = jsonData["value2"].as<int>();
+		value3 = jsonData["value3"].as<String>();
+	}
+
 	void updateValues(NRF24Message nrf24Message) {
 		code = nrf24Message.code;
 		status = nrf24Message.status;
@@ -45,7 +59,7 @@ public:
 		value2 = nrf24Message.value2;
 		value3 = nrf24Message.value3;
 	}
-	
+
 	void getMessageBytes(uint8_t *message, uint8_t length) {
 
 		message[0] = device_id;
