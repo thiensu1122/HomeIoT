@@ -45,6 +45,7 @@ public:
 		radio.startListening();
 		if (radio.available())
 		{
+			Serial.print("NRF24 got : ");
 			// Should be a message for us now
 			uint8_t buf[32];
 			uint8_t len = sizeof(DataPackage);
@@ -85,7 +86,7 @@ public:
 	}
 
 	void sendMessage(NRF24Message nrf24Message) {
-
+		Serial.print("NRF24 send :");
 		nrf24Message.printData();
 		uint8_t message[sizeof(DataPackage)];
 		memset(message,0,sizeof(message));

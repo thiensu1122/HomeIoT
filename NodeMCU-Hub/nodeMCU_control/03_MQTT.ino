@@ -82,6 +82,7 @@ public:
 		for (int i = 0; i< listCount; i++) {
 			StaticJsonDocument<100> jsonSensor;
 			jsonSensor["sensor_id"] = nrf24MessageList[i].getDeviceID();
+			jsonSensor["code"] = nrf24MessageList[i].getCode();
 			jsonSensor["status"] = nrf24MessageList[i].getStatus();
 			jsonSensor["value1"] = nrf24MessageList[i].getValue1();
 			jsonSensor["value2"] = nrf24MessageList[i].getValue2();

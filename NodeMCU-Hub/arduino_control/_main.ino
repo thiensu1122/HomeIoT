@@ -35,7 +35,6 @@ void loop()
 	long timepassed = millis() - lastUpdateInfo;
 	if(timepassed  >= 3000) {
 		lastUpdateInfo = millis();
-		Serial.println("Sending to gateway");
 		nrf24.sendMessage(nrf24Message);
 		
 	}
