@@ -80,7 +80,7 @@ public:
 		jsonDoc["direcionCode"] = "0";
 		JsonArray arraySensorData = jsonDoc.createNestedArray("sensorList");;
 		for (int i = 0; i< listCount; i++) {
-			StaticJsonDocument<100> jsonSensor;
+			StaticJsonDocument<200> jsonSensor;
 			jsonSensor["sensor_id"] = nrf24MessageList[i].getDeviceID();
 			jsonSensor["code"] = nrf24MessageList[i].getCode();
 			jsonSensor["status"] = nrf24MessageList[i].getStatus();
@@ -102,7 +102,7 @@ public:
 		if(timepassed  >= UPDATEINFOINTERVAL) {
 			lastUpdateInfo = millis();
 			String message = createMessage(nrf24MessageList, listCount);
-//			Serial.println(message);
+			Serial.println(message);
 			publicMessage(message);
 			return true;
 		}
