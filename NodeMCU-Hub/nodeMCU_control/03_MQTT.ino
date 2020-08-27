@@ -102,7 +102,7 @@ public:
 		if(timepassed  >= UPDATEINFOINTERVAL) {
 			lastUpdateInfo = millis();
 			String message = createMessage(nrf24MessageList, listCount);
-			Serial.println(message);
+			//Serial.println(message);
 			publicMessage(message);
 			return true;
 		}

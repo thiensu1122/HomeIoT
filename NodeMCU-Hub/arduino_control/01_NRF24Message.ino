@@ -16,7 +16,7 @@ union UnsignedIntAsBytes {
 
 class NRF24Message {
 private:
-	uint8_t device_id; //////////// to do change to unsigned int 2 bytes
+	unsigned int device_id; //////////// to do change to unsigned int 2 bytes
 	uint8_t code;
 	uint8_t status;
 	float value1;
@@ -25,7 +25,7 @@ private:
 public:
 	NRF24Message() {
 	}
-	NRF24Message(uint8_t device_id) {
+	NRF24Message(unsigned int device_id) {
 		this->device_id = device_id;
 		code = 0;
 		status = -1;
@@ -35,7 +35,7 @@ public:
 	}
 
 	void setDataPackage(DataPackage dataPackage) {
-		device_id = dataPackage.device_id;
+		device_id = getUnsignedIntFromPackageData(dataPackage.device_id_0,dataPackage.device_id_1 );
 		code = dataPackage.code;
 		status = dataPackage._status;
 		value1 = getFloatFromPackageData(dataPackage.value1_1,dataPackage.value1_2 ,dataPackage.value1_3, dataPackage.value1_4);
@@ -44,7 +44,7 @@ public:
 	}
 
 	void setJsonData(JsonObject jsonData) {
-		device_id = jsonData["sensor_id"].as<uint8_t>();
+		device_id = jsonData["sensor_id"].as<unsigned int>();
 		code = jsonData["code"].as<uint8_t>();
 		status = jsonData["status"].as<uint8_t>();
 		value1 = jsonData["value1"].as<int>();
@@ -61,24 +61,25 @@ public:
 	}
 
 	void getMessageBytes(uint8_t *message, uint8_t length) {
-
-		message[0] = device_id;
-		message[1] = code;
-		message[2] = status;
+		unsignedIntAsBytes.uival = device_id;
+		message[0] = unsignedIntAsBytes.bval[0];
+		message[1] = unsignedIntAsBytes.bval[1];
+		message[2] = code;
+		message[3] = status;
 		floatAsBytes.fval = value1;
-		message[3] = floatAsBytes.bval[0];
-		message[4] = floatAsBytes.bval[1];
-		message[5] = floatAsBytes.bval[2];
-		message[6] = floatAsBytes.bval[3];
+		message[4] = floatAsBytes.bval[0];
+		message[5] = floatAsBytes.bval[1];
+		message[6] = floatAsBytes.bval[2];
+		message[7] = floatAsBytes.bval[3];
 		floatAsBytes.fval = value2;
-		message[7] = floatAsBytes.bval[0];
-		message[8] = floatAsBytes.bval[1];
-		message[9] = floatAsBytes.bval[2];
-		message[10] = floatAsBytes.bval[3];
+		message[8] = floatAsBytes.bval[0];
+		message[9] = floatAsBytes.bval[1];
+		message[10] = floatAsBytes.bval[2];
+		message[11] = floatAsBytes.bval[3];
 		byte bytes[value3.length() + 1];
 		value3.getBytes(bytes, value3.length() + 1);
 		for(int i = 0; i< value3.length(); i++) {
-			message[11+i] = bytes[i];
+			message[12+i] = bytes[i];
 		}
 	}
 	void printData() {
@@ -95,7 +96,11 @@ public:
 		Serial.print(", value3: ");
 		Serial.println(value3);
 	}
-
+	unsigned int getUnsignedIntFromPackageData(uint8_t byte1,uint8_t byte2){
+		unsignedIntAsBytes.bval[0] = byte1;
+		unsignedIntAsBytes.bval[1] = byte2;
+		return unsignedIntAsBytes.uival;
+	}
 
 	float getFloatFromPackageData(uint8_t byte1,uint8_t byte2,uint8_t byte3, uint8_t byte4) {
 
@@ -118,7 +123,7 @@ public:
 
 		return stringOne;
 	}
-	uint8_t getDeviceID() {
+	unsigned int getDeviceID() {
 		return device_id;
 	}
 	uint8_t getCode() {

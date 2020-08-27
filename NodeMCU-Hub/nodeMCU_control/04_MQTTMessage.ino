@@ -32,8 +32,6 @@ public:
 		hub_id = jsonPayload["hub_id"].as<int>();
 		JsonArray jsonDeviceList = jsonPayload["sensorList"].as<JsonArray>();
 		messageListCount = jsonPayload["sensorList"].size();
-		Serial.print("sizeeeeeeeee :" );
-		Serial.println(jsonPayload["sensorList"].size());
 		for(int i=0; i<messageListCount; i++) {
 			nrf24MessageList[i].setJsonData(jsonDeviceList[i]);
 			//nrf24MessageList[i].printData();
