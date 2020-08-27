@@ -1,5 +1,8 @@
 package model.device;
 
+import MQTT.DeviceStatusCode;
+import Utility.Utility;
+
 import java.util.Date;
 
 public class Device {
@@ -10,8 +13,13 @@ public class Device {
     float value2;
     String value3;
     Date last_send;
-    String status;
-    String is_connected;
+    int status;
+    int code;
+    boolean is_connected;
+
+    public void printDevice(){
+        Utility.printOut("Device_id : " + device_id + " name : " + name + " description: " + description + " code : " + code + " status : " + status+  " value1 : " + value1 + " value2 : " + value2 + " value3 : " + value3);
+    }
 
     public int getDevice_id() {
         return device_id;
@@ -35,6 +43,16 @@ public class Device {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        if(status == DeviceStatusCode.OFFLINE.getCode())
+            is_connected = false;
+        this.status = status;
     }
 
     public float getValue1() {
@@ -69,19 +87,20 @@ public class Device {
         this.last_send = last_send;
     }
 
-    public String getStatus() {
-        return status;
+
+    public int getCode() {
+        return code;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public String getIs_connected() {
+    public boolean getIs_connected() {
         return is_connected;
     }
 
-    public void setIs_connected(String is_connected) {
+    public void setIs_connected(boolean is_connected) {
         this.is_connected = is_connected;
     }
 }

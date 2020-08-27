@@ -205,11 +205,11 @@ public class DatabaseConnection {
             if (con != null) {
                 PreparedStatement preparedStatement = con.prepareStatement(
                         "UPDATE device SET STATUS =?, VALUE1=?,VALUE2=?,VALUE3=?,last_updated=NOW(),is_connected=?  WHERE device_id= ?");
-                preparedStatement.setString(1, device.getStatus());
+                preparedStatement.setInt(1, device.getStatus());
                 preparedStatement.setFloat(2, device.getValue1());
                 preparedStatement.setFloat(3, device.getValue2());
                 preparedStatement.setString(4, device.getValue3());
-                preparedStatement.setBoolean(5, true);
+                preparedStatement.setBoolean(5, device.getIs_connected());
                 preparedStatement.setInt(6, (device.getDevice_id()));
                 preparedStatement.executeUpdate();
             }
@@ -310,7 +310,7 @@ public class DatabaseConnection {
                     device.setDescription(mapdevice.get("description").toString());
                 }
                 if(mapdevice.get("status") != null){
-                    device.setStatus(mapdevice.get("status").toString());
+                    device.setStatus(Byte.parseByte(mapdevice.get("status").toString()));
                 }
                 if(mapdevice.get("value1") != null){
                     device.setValue1(Float.parseFloat(mapdevice.get("value1").toString()));
@@ -322,7 +322,7 @@ public class DatabaseConnection {
                     device.setValue3((mapdevice.get("value3").toString()));
                 }
                 if(mapdevice.get("is_connected") != null){
-                    device.setIs_connected(mapdevice.get("is_connected").toString());
+                    device.setIs_connected(Boolean.parseBoolean(mapdevice.get("is_connected").toString()));
                 }
                 devices.add(device);
             }
@@ -350,7 +350,7 @@ public class DatabaseConnection {
                     device.setDescription(mapdevice.get("description").toString());
                 }
                 if(mapdevice.get("status") != null){
-                    device.setStatus(mapdevice.get("status").toString());
+                    device.setStatus(Byte.parseByte(mapdevice.get("status").toString()));
                 }
                 if(mapdevice.get("value1") != null){
                     device.setValue1(Float.parseFloat(mapdevice.get("value1").toString()));
@@ -362,7 +362,7 @@ public class DatabaseConnection {
                     device.setValue3((mapdevice.get("value3").toString()));
                 }
                 if(mapdevice.get("is_connected") != null){
-                    device.setIs_connected(mapdevice.get("is_connected").toString());
+                    device.setIs_connected(Boolean.parseBoolean(mapdevice.get("is_connected").toString()));
                 }
             }
         }

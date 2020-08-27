@@ -12,7 +12,7 @@ public class MessageFromMqtt {
     Date receiveDate;
     String from;
     String to;
-    String directionCode;
+    int directionCode;
 
     public void setReceiveDate(){
         receiveDate = new Date();
@@ -74,11 +74,11 @@ public class MessageFromMqtt {
         this.to = to;
     }
 
-    public String getDirectionCode() {
+    public int getDirectionCode() {
         return directionCode;
     }
 
-    public void setDirectionCode(String directionCode) {
+    public void setDirectionCode(int directionCode) {
         this.directionCode = directionCode;
     }
 }
