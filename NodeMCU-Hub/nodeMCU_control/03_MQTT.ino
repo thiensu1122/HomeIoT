@@ -78,7 +78,7 @@ public:
 		jsonDoc["code"] = UPDATEALLDEVICESSTATUS;
 		jsonDoc["message"] = ALLDEVICESMESSAGE;
 		jsonDoc["direcionCode"] = "0";
-		JsonArray arraySensorData = jsonDoc.createNestedArray("sensorList");;
+		JsonArray arraySensorData = jsonDoc.createNestedArray("deviceList");;
 		for (int i = 0; i< listCount; i++) {
 			StaticJsonDocument<200> jsonSensor;
 			jsonSensor["device_id"] = nrf24MessageList[i].getDeviceID();
