@@ -4,6 +4,7 @@
 
 #define ARDUINOTONODEMCUCHANNEL 1
 #define NODEMCUTOARDUINOCHANNEL 2
+#define NRF24DEBUG true
 
 class NRF24 {
 private:
@@ -45,7 +46,7 @@ public:
 		radio.startListening();
 		if (radio.available())
 		{
-			Serial.print("NRF24 got : ");
+
 			// Should be a message for us now
 			uint8_t buf[32];
 			uint8_t len = sizeof(DataPackage);
@@ -56,26 +57,15 @@ public:
 			DataPackage dataPackage;
 			memcpy( &dataPackage, buf, sizeof( DataPackage ) );
 			nrf24Message.setDataPackage(dataPackage);
-			nrf24Message.printData();
+			if(NRF24DEBUG) {
+				Serial.print("NRF24 got : ");
+				nrf24Message.printData();
+			}
 
 			return true;
 		} else {
 			return false;
 		}
-
-//		delay(5);
-//		radio.startListening();
-//		if ( radio.available()) {
-//			//Serial.println("Something");
-//			while (radio.available()) {
-//				int angleV = 0;
-//				radio.read(&angleV, sizeof(angleV));
-//				Serial.println("Something");
-//			}
-//			delay(5);
-//			radio.stopListening();
-//
-//		}
 	}
 	void printMessage(byte *message, uint8_t length) {
 		for(int i = 0; i< length; i++) {
@@ -86,8 +76,10 @@ public:
 	}
 
 	void sendMessage(NRF24Message nrf24Message) {
-		Serial.print("NRF24 send :");
-		nrf24Message.printData();
+		if(NRF24DEBUG) {
+			Serial.print("NRF24 send :");
+			nrf24Message.printData();
+		}
 		uint8_t message[sizeof(DataPackage)];
 		memset(message,0,sizeof(message));
 		nrf24Message.getMessageBytes(message,sizeof(DataPackage));

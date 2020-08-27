@@ -14,6 +14,7 @@
 NRF24 nrf24 = NRF24();
 int deviceID = EEPROM.read(0);
 long lastUpdateInfo = 0;
+NRF24Message nrf24Message(1);
 void setup()
 {
 	Serial.begin(115200);
@@ -24,21 +25,24 @@ void setup()
 void loop()
 {
 
-	
-	NRF24Message nrf24Message(1);
+
+
 	nrf24Message.setCode(2);
 	nrf24Message.setStatus(3);
 	nrf24Message.setValue1(11);
 	nrf24Message.setValue2(-22);
 	nrf24Message.setValue3("12345");
-	
+
 	long timepassed = millis() - lastUpdateInfo;
 	if(timepassed  >= 3000) {
 		lastUpdateInfo = millis();
 		nrf24.sendMessage(nrf24Message);
-		
+
 	}
 	if(nrf24.NRFLoop()) {
+		if(nrf24.getNRF24Message().getDeviceID() == nrf24Message.getDeviceID()) {
+			nrf24.getNRF24Message().printData();
 		}
-	
+	}
+
 }
