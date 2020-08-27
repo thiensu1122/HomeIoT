@@ -27,7 +27,7 @@ void loop()
 
 
 
-	nrf24Message.setCode(2);
+	nrf24Message.setCode(100);
 	nrf24Message.setStatus(3);
 	nrf24Message.setValue1(11);
 	nrf24Message.setValue2(-22);

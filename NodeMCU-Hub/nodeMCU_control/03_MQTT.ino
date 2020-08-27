@@ -11,8 +11,8 @@
 #define MQTTSERVER "server"
 #define MQTTDEVICE "device"
 
-#define UPDATEALLSENSOR 50
-#define ALLSENSORMESSAGE "ALL SENSOR"
+#define UPDATEALLDEVICESSTATUS 100
+#define ALLDEVICESMESSAGE "ALL DEVICES"
 #define HUBTOSERVER "0"
 #define TEMPSENSOR "52"
 #define CO2SENSOR "53"
@@ -75,13 +75,13 @@ public:
 		String message;
 		// initial 200 bytes for json document.
 		StaticJsonDocument<mqttBuffer> jsonDoc;
-		jsonDoc["code"] = UPDATEALLSENSOR;
-		jsonDoc["message"] = ALLSENSORMESSAGE;
+		jsonDoc["code"] = UPDATEALLDEVICESSTATUS;
+		jsonDoc["message"] = ALLDEVICESMESSAGE;
 		jsonDoc["direcionCode"] = "0";
 		JsonArray arraySensorData = jsonDoc.createNestedArray("sensorList");;
 		for (int i = 0; i< listCount; i++) {
 			StaticJsonDocument<200> jsonSensor;
-			jsonSensor["sensor_id"] = nrf24MessageList[i].getDeviceID();
+			jsonSensor["device_id"] = nrf24MessageList[i].getDeviceID();
 			jsonSensor["code"] = nrf24MessageList[i].getCode();
 			jsonSensor["status"] = nrf24MessageList[i].getStatus();
 			jsonSensor["value1"] = nrf24MessageList[i].getValue1();
