@@ -8,7 +8,7 @@ class MQTTMessage {
 private:
 	int code;
 	String message;
-	String directionCode;
+	int directionCode;
 	int user_id;
 	int hub_id;
 	NRF24Message nrf24MessageList[10];
@@ -27,7 +27,7 @@ public:
 		JsonObject jsonPayload = doc.as<JsonObject>();
 		code = jsonPayload["code"].as<int>();
 		message = jsonPayload["message"].as<String>();
-		directionCode = jsonPayload["directionCode"].as<String>();
+		directionCode = jsonPayload["directionCode"].as<int>();
 		user_id = jsonPayload["user_id"].as<int>();
 		hub_id = jsonPayload["hub_id"].as<int>();
 		JsonArray jsonDeviceList = jsonPayload["sensorList"].as<JsonArray>();
@@ -44,5 +44,9 @@ public:
 
 	uint8_t getNRF24MessageListCount(){
 		return messageListCount;	
+	}
+
+	int getDirectionCode(){
+		return directionCode;
 	}
 };

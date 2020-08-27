@@ -17,6 +17,9 @@
 #define TEMPSENSOR "52"
 #define CO2SENSOR "53"
 
+#define SERVERTOHUB 3
+#define ANDROIDTOHUB 5
+
 
 class MQTT {
 private:
