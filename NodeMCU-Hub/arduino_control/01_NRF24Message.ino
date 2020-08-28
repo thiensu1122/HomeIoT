@@ -78,7 +78,7 @@ public:
 		message[11] = floatAsBytes.bval[3];
 		byte bytes[value3.length() + 1];
 		value3.getBytes(bytes, value3.length() + 1);
-		for(int i = 0; i< value3.length(); i++) {
+		for(int i = 0; i< value3.length()+1; i++) {
 			message[12+i] = bytes[i];
 		}
 	}
@@ -96,7 +96,7 @@ public:
 		Serial.print(", value3: ");
 		Serial.println(value3);
 	}
-	unsigned int getUnsignedIntFromPackageData(uint8_t byte1,uint8_t byte2){
+	unsigned int getUnsignedIntFromPackageData(uint8_t byte1,uint8_t byte2) {
 		unsignedIntAsBytes.bval[0] = byte1;
 		unsignedIntAsBytes.bval[1] = byte2;
 		return unsignedIntAsBytes.uival;

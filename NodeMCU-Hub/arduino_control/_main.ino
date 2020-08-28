@@ -12,7 +12,8 @@
 //RH_NRF24 nrf24(2, 4); // use this for NodeMCU Amica/AdaFruit Huzzah ESP8266 Feather
 //RH_NRF24 nrf24(7, 8); // use this with Arduino UNO/Nano
 NRF24 nrf24 = NRF24();
-int deviceID = EEPROM.read(0);
+//int deviceID = EEPROM.read(0);
+uint16_t deviceID = 1;
 long lastUpdateInfo = 0;
 NRF24Message nrf24Message(1);
 void setup()
@@ -31,7 +32,7 @@ void loop()
 	nrf24Message.setStatus(3);
 	nrf24Message.setValue1(11);
 	nrf24Message.setValue2(-22);
-	nrf24Message.setValue3("12345");
+	nrf24Message.setValue3("123");
 
 	long timepassed = millis() - lastUpdateInfo;
 	if(timepassed  >= 3000) {
@@ -40,7 +41,7 @@ void loop()
 
 	}
 	if(nrf24.NRFLoop()) {
-		if(nrf24.getNRF24Message().getDeviceID() == nrf24Message.getDeviceID()) {
+		if(nrf24.getNRF24Message().getDeviceID() == deviceID) {
 			nrf24.getNRF24Message().printData();
 		}
 	}

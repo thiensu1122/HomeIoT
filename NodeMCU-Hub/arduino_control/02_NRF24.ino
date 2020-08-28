@@ -49,10 +49,9 @@ public:
 
 			// Should be a message for us now
 			uint8_t buf[32];
-			uint8_t len = sizeof(DataPackage);
 			memset(buf,0,sizeof(buf));
-			radio.read(buf, len);
-
+			radio.read(buf, sizeof(DataPackage));
+			
 			// Send a reply
 			DataPackage dataPackage;
 			memcpy( &dataPackage, buf, sizeof( DataPackage ) );
@@ -81,7 +80,7 @@ public:
 			nrf24Message.printData();
 		}
 		uint8_t message[sizeof(DataPackage)];
-		memset(message,0,sizeof(message));
+		memset(message,0,sizeof(DataPackage));
 		nrf24Message.getMessageBytes(message,sizeof(DataPackage));
 
 		delay(5);
