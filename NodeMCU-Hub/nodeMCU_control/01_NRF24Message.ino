@@ -44,7 +44,7 @@ public:
 	}
 
 	void setJsonData(JsonObject jsonData) {
-		device_id = jsonData["sensor_id"].as<unsigned int>();
+		device_id = jsonData["device_id"].as<uint16_t>();
 		code = jsonData["code"].as<uint8_t>();
 		status = jsonData["status"].as<uint8_t>();
 		value1 = jsonData["value1"].as<int>();

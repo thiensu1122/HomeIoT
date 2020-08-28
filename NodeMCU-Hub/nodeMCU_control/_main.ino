@@ -74,11 +74,14 @@ static void mainMQTTCallback(char* topic, byte* payload, unsigned int length) {
 	mqttmessage = MQTTMessage();
 	mqttmessage.setJsonMQTT(strPayload);
 	if(mqttmessage.getDirectionCode() == SERVERTOHUB || mqttmessage.getDirectionCode() == ANDROIDTOHUB) {
-		Serial.println("Handle mqtt");
+		mqttmessage.printData();
 		uint8_t nrf24MessageListCount = mqttmessage.getNRF24MessageListCount();
 		NRF24Message *nrf24MessageList = mqttmessage.getNRF24MessageList();
-		for(int i =0; i<nrf24MessageListCount; i++) {
-			nrf24.sendMessage(nrf24MessageList[i]);
+		if(mqttmessage.getCode() == MESSAGECODE_CONTROLDEVICE) {
+			for(int i =0; i<nrf24MessageListCount; i++) {
+				//nrf24MessageList[i].printData();
+				nrf24.sendMessage(nrf24MessageList[i]);
+			}
 		}
 	}
 

@@ -30,23 +30,45 @@ public:
 		directionCode = jsonPayload["directionCode"].as<int>();
 		user_id = jsonPayload["user_id"].as<int>();
 		hub_id = jsonPayload["hub_id"].as<int>();
-		JsonArray jsonDeviceList = jsonPayload["sensorList"].as<JsonArray>();
-		messageListCount = jsonPayload["sensorList"].size();
+		JsonArray jsonDeviceList = jsonPayload["deviceList"].as<JsonArray>();
+		messageListCount = jsonPayload["deviceList"].size();
 		for(int i=0; i<messageListCount; i++) {
 			nrf24MessageList[i].setJsonData(jsonDeviceList[i]);
 			//nrf24MessageList[i].printData();
 		}
 	}
 
-	NRF24Message* getNRF24MessageList(){
+	void printData() {
+		Serial.print("code: ");
+		Serial.print(code);
+		Serial.print(", message: ");
+		Serial.print(message);
+		Serial.print(", directionCode: ");
+		Serial.print(directionCode);
+		Serial.print(", user_id: ");
+		Serial.print(user_id);
+		Serial.print(", hub_id: ");
+		Serial.print(hub_id);
+		Serial.print(", messageListCount: ");
+		Serial.println(messageListCount);
+		for(int i = 0; i< messageListCount; i++) {
+			nrf24MessageList[i].printData();
+		}
+		Serial.println();
+	}
+
+	NRF24Message* getNRF24MessageList() {
 		return nrf24MessageList;
 	}
 
-	uint8_t getNRF24MessageListCount(){
-		return messageListCount;	
+	uint8_t getNRF24MessageListCount() {
+		return messageListCount;
 	}
 
-	int getDirectionCode(){
+	int getDirectionCode() {
 		return directionCode;
+	}
+	int getCode() {
+		return code;
 	}
 };

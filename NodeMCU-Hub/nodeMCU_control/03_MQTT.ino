@@ -20,6 +20,8 @@
 #define SERVERTOHUB 3
 #define ANDROIDTOHUB 5
 
+#define MESSAGECODE_CONTROLDEVICE 200
+
 
 class MQTT {
 private:
