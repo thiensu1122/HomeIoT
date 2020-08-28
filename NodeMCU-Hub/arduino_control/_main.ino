@@ -1,6 +1,4 @@
-#include "DHT.h"
 #include <EEPROM.h>
-
 
 //MISO connects to pin 12 of the Arduino Nano
 //MOSI connects to pin 11 of the Arduino Nano
@@ -16,33 +14,31 @@ NRF24 nrf24 = NRF24();
 uint16_t deviceID = 1;
 long lastUpdateInfo = 0;
 NRF24Message nrf24Message(1);
+DHTHome dht11;
+
 void setup()
 {
 	Serial.begin(115200);
 	nrf24.setupNRF();
+	dht11.setupDHT();
 }
 
 
 void loop()
 {
 
-
-
-	nrf24Message.setCode(100);
-	nrf24Message.setStatus(3);
-	nrf24Message.setValue1(11);
-	nrf24Message.setValue2(-22);
-	nrf24Message.setValue3("123");
-
 	long timepassed = millis() - lastUpdateInfo;
 	if(timepassed  >= 3000) {
+		
 		lastUpdateInfo = millis();
+		dht11.getTempAndHumi(nrf24Message);
+		nrf24Message.printData();
 		nrf24.sendMessage(nrf24Message);
 
 	}
 	if(nrf24.NRFLoop()) {
 		if(nrf24.getNRF24Message().getDeviceID() == deviceID) {
-			nrf24.getNRF24Message().printData();
+			//nrf24.getNRF24Message().printData();
 		}
 	}
 
