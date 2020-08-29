@@ -14,11 +14,11 @@ public class Device {
     String value3;
     Date last_send;
     int status;
-    int code;
+    int device_code;
     boolean is_connected;
 
     public void printDevice(){
-        Utility.printOut("Device_id : " + device_id + " name : " + name + " description: " + description + " code : " + code + " status : " + status+  " value1 : " + value1 + " value2 : " + value2 + " value3 : " + value3);
+        Utility.printOut("Device_id : " + device_id + " name : " + name + " description: " + description + " device_code : " + device_code + " status : " + status+  " value1 : " + value1 + " value2 : " + value2 + " value3 : " + value3);
     }
 
     public int getDevice_id() {
@@ -87,13 +87,12 @@ public class Device {
         this.last_send = last_send;
     }
 
-
-    public int getCode() {
-        return code;
+    public int getDevice_code() {
+        return device_code;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setDevice_code(int device_code) {
+        this.device_code = device_code;
     }
 
     public boolean getIs_connected() {
