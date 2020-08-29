@@ -5,7 +5,7 @@
 struct DataPackage {
   uint8_t device_id_0;
   uint8_t device_id_1;
-  uint8_t code;
+  uint8_t device_code;
   uint8_t _status;
   uint8_t value1_1;
   uint8_t value1_2;

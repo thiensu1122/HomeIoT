@@ -17,7 +17,7 @@ union UnsignedIntAsBytes {
 class NRF24Message {
 private:
 	unsigned int device_id; //////////// to do change to unsigned int 2 bytes
-	uint8_t code;
+	uint8_t device_code;
 	uint8_t status;
 	float value1;
 	float value2;
@@ -27,7 +27,7 @@ public:
 	}
 	NRF24Message(unsigned int device_id) {
 		this->device_id = device_id;
-		code = 0;
+		device_code = 0;
 		status = -1;
 		value1 = 0;
 		value2 = 0;
@@ -36,7 +36,7 @@ public:
 
 	void setDataPackage(DataPackage dataPackage) {
 		device_id = getUnsignedIntFromPackageData(dataPackage.device_id_0,dataPackage.device_id_1 );
-		code = dataPackage.code;
+		device_code = dataPackage.device_code;
 		status = dataPackage._status;
 		value1 = getFloatFromPackageData(dataPackage.value1_1,dataPackage.value1_2 ,dataPackage.value1_3, dataPackage.value1_4);
 		value2 = getFloatFromPackageData(dataPackage.value2_1,dataPackage.value2_2 ,dataPackage.value2_3, dataPackage.value2_4);
@@ -45,7 +45,7 @@ public:
 
 	void setJsonData(JsonObject jsonData) {
 		device_id = jsonData["device_id"].as<uint16_t>();
-		code = jsonData["code"].as<uint8_t>();
+		device_code = jsonData["code"].as<uint8_t>();
 		status = jsonData["status"].as<uint8_t>();
 		value1 = jsonData["value1"].as<int>();
 		value2 = jsonData["value2"].as<int>();
@@ -53,7 +53,7 @@ public:
 	}
 
 	void updateValues(NRF24Message nrf24Message) {
-		code = nrf24Message.code;
+		device_code = nrf24Message.device_code;
 		status = nrf24Message.status;
 		value1 = nrf24Message.value1;
 		value2 = nrf24Message.value2;
@@ -64,7 +64,7 @@ public:
 		unsignedIntAsBytes.uival = device_id;
 		message[0] = unsignedIntAsBytes.bval[0];
 		message[1] = unsignedIntAsBytes.bval[1];
-		message[2] = code;
+		message[2] = device_code;
 		message[3] = status;
 		floatAsBytes.fval = value1;
 		message[4] = floatAsBytes.bval[0];
@@ -85,8 +85,8 @@ public:
 	void printData() {
 		Serial.print("id: ");
 		Serial.print(device_id);
-		Serial.print(", code: ");
-		Serial.print(code);
+		Serial.print(", device_code: ");
+		Serial.print(device_code);
 		Serial.print(", status: ");
 		Serial.print(status);
 		Serial.print(", value1: ");
@@ -126,8 +126,8 @@ public:
 	unsigned int getDeviceID() {
 		return device_id;
 	}
-	uint8_t getCode() {
-		return code;
+	uint8_t getDeviceCode() {
+		return device_code;
 	}
 	uint8_t getStatus() {
 		return status;
@@ -141,8 +141,8 @@ public:
 	String getValue3() {
 		return value3;
 	}
-	void setCode(uint8_t code) {
-		this->code = code;
+	void setDeviceCode(uint8_t device_code) {
+		this->device_code = device_code;
 	}
 	void setStatus(uint8_t status) {
 		this->status = status;
