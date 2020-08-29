@@ -10,13 +10,13 @@ union FloatAsBytes {
 } floatAsBytes;
 
 union UnsignedIntAsBytes {
-	unsigned int uival;
+	uint16_t uival;
 	uint8_t bval[2];
 } unsignedIntAsBytes;
 
 class NRF24Message {
 private:
-	unsigned int device_id; //////////// to do change to unsigned int 2 bytes
+	uint16_t device_id; //////////// to do change to unsigned int 2 bytes
 	uint8_t device_code;
 	uint8_t status;
 	float value1;
@@ -25,7 +25,7 @@ private:
 public:
 	NRF24Message() {
 	}
-	NRF24Message(unsigned int device_id) {
+	NRF24Message(uint16_t device_id) {
 		this->device_id = device_id;
 		device_code = 0;
 		status = -1;
@@ -123,7 +123,7 @@ public:
 
 		return stringOne;
 	}
-	unsigned int getDeviceID() {
+	uint16_t getDeviceID() {
 		return device_id;
 	}
 	uint8_t getDeviceCode() {

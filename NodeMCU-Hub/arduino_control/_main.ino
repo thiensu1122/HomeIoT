@@ -16,6 +16,10 @@ long lastUpdateInfo = 0;
 NRF24Message nrf24Message(1);
 DHTHome dht11;
 
+void readEEPROM() {
+	
+}
+
 void setup()
 {
 	nrf24Message.setDeviceCode(1);
@@ -30,7 +34,7 @@ void loop()
 
 	long timepassed = millis() - lastUpdateInfo;
 	if(timepassed  >= 3000) {
-		
+
 		lastUpdateInfo = millis();
 		dht11.getTempAndHumi(nrf24Message);
 		nrf24Message.printData();
