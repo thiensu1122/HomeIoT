@@ -11,19 +11,28 @@
 //RH_NRF24 nrf24(7, 8); // use this with Arduino UNO/Nano
 NRF24 nrf24 = NRF24();
 //int deviceID = EEPROM.read(0);
-uint16_t deviceID = 1;
+uint16_t device_id = 0;
+uint8_t device_code = 0;
 long lastUpdateInfo = 0;
-NRF24Message nrf24Message(1);
+NRF24Message nrf24Message;
 DHTHome dht11;
 
 void readEEPROM() {
-	
+	unsignedIntAsBytes.bval[0] = EEPROM.read(0);
+	unsignedIntAsBytes.bval[1] = EEPROM.read(1);
+	device_id = unsignedIntAsBytes.uival;
+	device_code = EEPROM.read(2);
+//	Serial.println(device_id);
+//	Serial.println(device_code);
 }
 
 void setup()
 {
-	nrf24Message.setDeviceCode(1);
 	Serial.begin(115200);
+	
+	readEEPROM();
+	nrf24Message = NRF24Message(device_id);
+	nrf24Message.setDeviceCode(device_code);
 	nrf24.setupNRF();
 	dht11.setupDHT();
 }
@@ -42,7 +51,7 @@ void loop()
 
 	}
 	if(nrf24.NRFLoop()) {
-		if(nrf24.getNRF24Message().getDeviceID() == deviceID) {
+		if(nrf24.getNRF24Message().getDeviceID() == device_id) {
 			//nrf24.getNRF24Message().printData();
 		}
 	}
