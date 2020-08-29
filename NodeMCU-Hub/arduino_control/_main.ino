@@ -18,6 +18,7 @@ DHTHome dht11;
 
 void setup()
 {
+	nrf24Message.setDeviceCode(1);
 	Serial.begin(115200);
 	nrf24.setupNRF();
 	dht11.setupDHT();
