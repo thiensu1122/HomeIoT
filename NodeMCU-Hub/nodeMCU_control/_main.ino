@@ -50,7 +50,7 @@ void updateMessageList() {
 	for (int i = 0; i< devicesCount ; i++) {
 		if(nrf24MessageList[i].getDeviceID() == nrf24Message.getDeviceID()) {
 			nrf24MessageList[i].updateValues(nrf24Message);
-			nrf24MessageList[i].printData();
+			//nrf24MessageList[i].printData();
 		}
 	}
 }

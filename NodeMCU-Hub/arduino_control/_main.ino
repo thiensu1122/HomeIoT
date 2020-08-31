@@ -52,13 +52,11 @@ void loop()
 
 	long timepassed = millis() - lastUpdateInfo;
 	if(timepassed  >= 3000) {
-
 		lastUpdateInfo = millis();
-		
 		if(device_code == 0) dht11.getTempAndHumi(nrf24Message);
 		if(device_code == 1) rgbLED.getColors(nrf24Message);
 		//nrf24Message.debugData();
-		nrf24Message.printData();
+		//nrf24Message.printData();
 		nrf24.sendMessage(nrf24Message);
 
 	}
