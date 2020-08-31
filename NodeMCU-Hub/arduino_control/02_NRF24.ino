@@ -10,7 +10,7 @@
 
 #define ARDUINOTONODEMCUCHANNEL 1
 #define NODEMCUTOARDUINOCHANNEL 2
-#define NRF24DEBUG false
+#define NRF24DEBUG true
 
 class NRF24 {
 private:

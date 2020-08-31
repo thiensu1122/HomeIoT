@@ -28,6 +28,11 @@ public:
 		analogWrite(green_light_pin, green_light_value);
 		analogWrite(blue_light_pin, blue_light_value);
 	}
+
+	void setColors(NRF24Message nrf24Message) {
+		RGB_color(nrf24Message.getValue3()[0],nrf24Message.getValue3()[1],nrf24Message.getValue3()[2]);
+	}
+
 	void getColors(NRF24Message &nrf24Message) {
 		byte newValue3[3];
 		nrf24Message.setStatus(1);
@@ -36,5 +41,5 @@ public:
 		newValue3[2]=blue_light_value;
 		nrf24Message.setValue3(newValue3, 3);
 	}
-	
+
 };

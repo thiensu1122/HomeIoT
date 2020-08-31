@@ -57,7 +57,7 @@ void loop()
 		
 		if(device_code == 0) dht11.getTempAndHumi(nrf24Message);
 		if(device_code == 1) rgbLED.getColors(nrf24Message);
-		nrf24Message.debugData();
+		//nrf24Message.debugData();
 		nrf24Message.printData();
 		nrf24.sendMessage(nrf24Message);
 
@@ -66,8 +66,7 @@ void loop()
 		if(nrf24.getNRF24Message().getDeviceID() == device_id && nrf24.getNRF24Message().getDeviceCode() == device_code) {
 			//nrf24.getNRF24Message().printData();
 			if (nrf24.getNRF24Message().getDeviceCode() == RGBLEDDeviceCode){
-				floatAsBytes.fval = nrf24.getNRF24Message().getValue1();
-				rgbLED.RGB_color(floatAsBytes.bval[0],floatAsBytes.bval[1],floatAsBytes.bval[2]);
+				rgbLED.setColors(nrf24.getNRF24Message());
 			}
 			
 		}
