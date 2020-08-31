@@ -29,11 +29,12 @@ public:
 		analogWrite(blue_light_pin, blue_light_value);
 	}
 	void getColors(NRF24Message &nrf24Message) {
-		String newValue3 = "";
-		newValue3 +=red_light_value;
-		newValue3 +=green_light_value;
-		newValue3 +=blue_light_value;
-		//nrf24Message.setValue3(newValue3);
+		byte newValue3[3];
+		nrf24Message.setStatus(1);
+		newValue3[0]=red_light_value;
+		newValue3[1]=green_light_value;
+		newValue3[2]=blue_light_value;
+		nrf24Message.setValue3(newValue3, 3);
 	}
 	
 };

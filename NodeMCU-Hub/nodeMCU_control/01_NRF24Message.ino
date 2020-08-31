@@ -129,7 +129,7 @@ public:
 	}
 	void setValue3FromPackageData(uint8_t byte1,uint8_t byte2,uint8_t byte3, uint8_t byte4, uint8_t byte5, uint8_t byte6, uint8_t byte7, uint8_t byte8, uint8_t byte9,uint8_t byte10,
 	                              uint8_t byte11,uint8_t byte12,uint8_t byte13, uint8_t byte14, uint8_t byte15, uint8_t byte16, uint8_t byte17, uint8_t byte18, uint8_t byte19,uint8_t byte20) {
-		
+
 		value3[0] = byte1;
 		value3[1] = byte2;
 		value3[2] = byte3;
@@ -170,9 +170,9 @@ public:
 	byte *getValue3() {
 		return value3;
 	}
-	String getValue3String(){
+	String getValue3String() {
 		String result = "";
-		for(int i =0;i< sizeof(value3);i++){
+		for(int i =0; i< sizeof(value3); i++) {
 			result += value3[i];
 		}
 		return result;
@@ -191,5 +191,14 @@ public:
 	}
 	void setValue3(byte *value3) {
 		memcpy(this->value3, value3, sizeof(value3));
+	}
+	void clearValue3() {
+		memset(value3,0,sizeof(value3));
+	}
+	void setValue3(byte *newValue3,int length) {
+		clearValue3();
+		for(int i =0; i< length; i++) {
+			value3[i] = newValue3[i];
+		}
 	}
 };
