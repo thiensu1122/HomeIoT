@@ -20,12 +20,12 @@ public:
 			nrf24Message.setStatus(254);
 			nrf24Message.setValue1(0);
 			nrf24Message.setValue2(0);
-			nrf24Message.setValue3("");
+			nrf24Message.clearValue3();
 		} else {
 			nrf24Message.setStatus(1);
 			nrf24Message.setValue1(h);
 			nrf24Message.setValue2(t);
-			nrf24Message.setValue3("");
+			nrf24Message.clearValue3();
 		}
 
 
