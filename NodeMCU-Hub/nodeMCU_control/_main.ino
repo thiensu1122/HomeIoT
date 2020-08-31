@@ -4,7 +4,7 @@
 #include <ArduinoJson.h>
 #include "DataPackage.h"
 
-#define devicesCount 5
+#define devicesCount 2
 #define deviceID_1 1
 #define deviceID_2 2
 #define deviceID_3 3
@@ -50,6 +50,7 @@ void updateMessageList() {
 	for (int i = 0; i< devicesCount ; i++) {
 		if(nrf24MessageList[i].getDeviceID() == nrf24Message.getDeviceID()) {
 			nrf24MessageList[i].updateValues(nrf24Message);
+			nrf24MessageList[i].printData();
 		}
 	}
 }

@@ -129,8 +129,8 @@ public:
 		jsonSensor["value2"] = nrf24Message.getValue2();
 		//jsonSensor["value3"] = nrf24MessageList[i].getValue3String();
 		JsonArray value3bytes = jsonSensor.createNestedArray("value3");
-		for(int j=0; j<20; j++) {
-			value3bytes.add(j);
+		for(int j=0; j<nrf24Message.getValue3Size(); j++) {
+			value3bytes.add(nrf24Message.getValue3()[j]);
 		}
 
 		arraySensorData.add(jsonSensor);

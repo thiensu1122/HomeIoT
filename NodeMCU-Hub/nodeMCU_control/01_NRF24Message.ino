@@ -23,6 +23,7 @@ private:
 	float value2;
 	uint8_t value3[20]; /////// 32 - 2(deviceID0 - 1(devicecode) - 1(status) - 4(value1) - 4(value2) = 20
 public:
+	
 	NRF24Message() {
 	}
 	NRF24Message(uint16_t device_id) {
@@ -48,11 +49,15 @@ public:
 
 	void setJsonData(JsonObject jsonData) {
 		device_id = jsonData["device_id"].as<uint16_t>();
-		device_code = jsonData["code"].as<uint8_t>();
+		device_code = jsonData["device_code"].as<uint8_t>();
 		status = jsonData["status"].as<uint8_t>();
 		value1 = jsonData["value1"].as<int>();
 		value2 = jsonData["value2"].as<int>();
-		jsonData["value3"].as<String>().getBytes(value3, sizeof(value3));
+		JsonArray arr = jsonData["value3"].as<JsonArray>();
+		int i=0;
+		for (JsonVariant value : arr) {
+			value3[i++] = value.as<byte>();
+		}
 	}
 
 	void updateValues(NRF24Message nrf24Message) {
@@ -200,5 +205,8 @@ public:
 		for(int i =0; i< length; i++) {
 			value3[i] = newValue3[i];
 		}
+	}
+	size_t getValue3Size(){
+		return sizeof(value3);
 	}
 };
