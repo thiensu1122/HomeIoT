@@ -91,7 +91,7 @@ public:
 			jsonSensor["status"] = nrf24MessageList[i].getStatus();
 			jsonSensor["value1"] = nrf24MessageList[i].getValue1();
 			jsonSensor["value2"] = nrf24MessageList[i].getValue2();
-			jsonSensor["value3"] = nrf24MessageList[i].getValue3();
+			jsonSensor["value3"] = nrf24MessageList[i].getValue3String();
 			arraySensorData.add(jsonSensor);
 		}
 		serializeJsonPretty(jsonDoc, message);

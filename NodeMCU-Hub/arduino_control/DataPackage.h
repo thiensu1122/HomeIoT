@@ -23,6 +23,18 @@ struct DataPackage {
   uint8_t value3_6;
   uint8_t value3_7;
   uint8_t value3_8;
+  uint8_t value3_9;
+  uint8_t value3_10;
+  uint8_t value3_11;
+  uint8_t value3_12;
+  uint8_t value3_13;
+  uint8_t value3_14;
+  uint8_t value3_15;
+  uint8_t value3_16;
+  uint8_t value3_17;
+  uint8_t value3_18;
+  uint8_t value3_19;
+  uint8_t value3_20;
 };
 
 

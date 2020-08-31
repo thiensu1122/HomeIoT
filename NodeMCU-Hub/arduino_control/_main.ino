@@ -1,22 +1,30 @@
 #include <EEPROM.h>
 
-//MISO connects to pin 12 of the Arduino Nano
-//MOSI connects to pin 11 of the Arduino Nano
-//SCK connects to pin 13 of the Arduino Nano
-//CE connects to pin 7 of the Arduino Nano
-//CSN connects to pin 8 of the Arduino Nano
+/*
+ * freepin :
+ * D2	-> 2
+ * D3~	-> 3
+ * D4	-> 4
+ * D5~	-> 5
+ * D6~	-> 6
+ * D9~	-> 9
+ * D10~ -> 10
+ * ~ : PWM
+ * A0 --> A7
+	DHT11 --> pin D2
+	GRB led -> PIN D3,D5,D6
 
+*/
 
-//RH_NRF24 nrf24(2, 4); // use this for NodeMCU Amica/AdaFruit Huzzah ESP8266 Feather
-//RH_NRF24 nrf24(7, 8); // use this with Arduino UNO/Nano
+#define RGBLEDDeviceCode 1
+
 NRF24 nrf24 = NRF24();
-//int deviceID = EEPROM.read(0);
-uint16_t device_id = 0;
-uint8_t device_code = 0;
+uint16_t device_id = 1;
+uint8_t device_code = 1;
 long lastUpdateInfo = 0;
 NRF24Message nrf24Message;
 DHTHome dht11;
-
+RGBLED rgbLED;
 void readEEPROM() {
 	unsignedIntAsBytes.bval[0] = EEPROM.read(0);
 	unsignedIntAsBytes.bval[1] = EEPROM.read(1);
@@ -29,12 +37,13 @@ void readEEPROM() {
 void setup()
 {
 	Serial.begin(115200);
-	
-	readEEPROM();
+
+	//readEEPROM();
 	nrf24Message = NRF24Message(device_id);
 	nrf24Message.setDeviceCode(device_code);
 	nrf24.setupNRF();
-	dht11.setupDHT();
+	if(device_code == 0) dht11.setupDHT();
+	if(device_code == 1) rgbLED.setup();
 }
 
 
@@ -45,14 +54,22 @@ void loop()
 	if(timepassed  >= 3000) {
 
 		lastUpdateInfo = millis();
-		dht11.getTempAndHumi(nrf24Message);
+		
+		if(device_code == 0) dht11.getTempAndHumi(nrf24Message);
+		if(device_code == 1) rgbLED.getColors(nrf24Message);
+		nrf24Message.debugData();
 		nrf24Message.printData();
 		nrf24.sendMessage(nrf24Message);
 
 	}
 	if(nrf24.NRFLoop()) {
-		if(nrf24.getNRF24Message().getDeviceID() == device_id) {
+		if(nrf24.getNRF24Message().getDeviceID() == device_id && nrf24.getNRF24Message().getDeviceCode() == device_code) {
 			//nrf24.getNRF24Message().printData();
+			if (nrf24.getNRF24Message().getDeviceCode() == RGBLEDDeviceCode){
+				floatAsBytes.fval = nrf24.getNRF24Message().getValue1();
+				rgbLED.RGB_color(floatAsBytes.bval[0],floatAsBytes.bval[1],floatAsBytes.bval[2]);
+			}
+			
 		}
 	}
 

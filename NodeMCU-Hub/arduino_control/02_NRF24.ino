@@ -2,6 +2,12 @@
 #include <nRF24L01.h>
 #include <RF24.h>
 
+//MISO connects to pin 12 of the Arduino Nano
+//MOSI connects to pin 11 of the Arduino Nano
+//SCK connects to pin 13 of the Arduino Nano
+//CE connects to pin 7 of the Arduino Nano
+//CSN connects to pin 8 of the Arduino Nano
+
 #define ARDUINOTONODEMCUCHANNEL 1
 #define NODEMCUTOARDUINOCHANNEL 2
 #define NRF24DEBUG false
