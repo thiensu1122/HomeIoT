@@ -22,15 +22,17 @@
 #define DeviceCode_DHT11 0
 #define DeviceCode_RGBLED 1
 #define DeviceCode_MQ135 2
+#define DeviceCode_BH1750 3
 
 NRF24 nrf24 = NRF24();
 uint16_t device_id = 1;
-uint8_t device_code = 2;
+uint8_t device_code = DeviceCode_BH1750;
 long lastUpdateInfo = 0;
 NRF24Message nrf24Message;
 DHTHome dht11;
 RGBLED rgbLED;
 SensorMQ135 sensorMQ135;
+SensorBH1750 bh1750;
 void readEEPROM() {
 	unsignedIntAsBytes.bval[0] = EEPROM.read(0);
 	unsignedIntAsBytes.bval[1] = EEPROM.read(1);
@@ -51,6 +53,7 @@ void setup()
 	if(device_code == DeviceCode_DHT11) dht11.setupDHT();
 	if(device_code == DeviceCode_RGBLED) rgbLED.setup();
 	if(device_code == DeviceCode_MQ135) sensorMQ135.setup();
+	if(device_code == DeviceCode_BH1750) bh1750.setup();
 }
 
 
@@ -62,6 +65,7 @@ void loop()
 		lastUpdateInfo = millis();
 		if(device_code == DeviceCode_DHT11) dht11.getTempAndHumi(nrf24Message);
 		if(device_code == DeviceCode_RGBLED) rgbLED.getColors(nrf24Message);
+		if(device_code == DeviceCode_BH1750) bh1750.getLux(nrf24Message);
 		//nrf24Message.debugData();
 		//nrf24Message.printData();
 		nrf24.sendMessage(nrf24Message);

@@ -95,13 +95,14 @@ void loop()
 	}
 	if(nrf24.NRFLoop()) {
 		//got message from devices or sensors
-		NRF24Message nrf24Message = nrf24.getNRF24Message();
-		if(nrf24Message.getStatus() == STATUS_CONFIRM){
+		nrf24Message = nrf24.getNRF24Message();
+		if(nrf24Message.getStatus() == STATUS_CONFIRM) {
 			mqtt.sendConfirmMessages(nrf24Message);
-		}else if(nrf24Message.getStatus() == STATUS_EMEGENCY){
+		} else if(nrf24Message.getStatus() == STATUS_EMEGENCY) {
 			mqtt.sendEmegencyMessages(nrf24Message);
 		}
 		nrf24Message.setStatus(STATUS_OK);
+		//nrf24Message.printData();
 		updateMessageList();
 	}
 }
