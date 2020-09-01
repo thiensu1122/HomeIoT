@@ -22,6 +22,7 @@
 #define MESSAGECODE_UPDATEALLDEVICESSTATUS 100
 #define MESSAGECODE_UPDATESINGLEDEVICESTATUS 101
 #define MESSAGECODE_CONFIRM 500
+#define MESSAGECODE_EMEGENCY 502
 
 #define SERVERTOHUB 3
 #define ANDROIDTOHUB 5
@@ -174,6 +175,15 @@ public:
 		publicMessage(message);
 		delay(10);
 		message = createMessage(nrf24Message,MESSAGECODE_CONFIRM,DIRECTIONCODE_HUBTOANDROID);
+		publicMessage(message);
+		delay(10);
+	}
+	void sendEmegencyMessages(NRF24Message nrf24Message){
+		String message = "";
+		message = createMessage(nrf24Message,MESSAGECODE_EMEGENCY,DIRECTIONCODE_HUBTOSERVER);
+		publicMessage(message);
+		delay(10);
+		message = createMessage(nrf24Message,MESSAGECODE_EMEGENCY,DIRECTIONCODE_HUBTOANDROID);
 		publicMessage(message);
 		delay(10);
 	}

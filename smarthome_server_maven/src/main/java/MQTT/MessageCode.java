@@ -18,7 +18,8 @@ public enum MessageCode {
     CONTROLDEVICE(200, "Control device"),
 
     CONFIRM(500, "Confirm message Arrive"),
-    RESPONES(501, "response request from android or hub")
+    RESPONES(501, "response request from android or hub"),
+    EMEGENCY(502, "When device find emegency situation")
     ;
 
 
