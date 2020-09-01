@@ -12,6 +12,7 @@
 #define NODEMCUTOARDUINOCHANNEL 2
 #define STATUS_CONFIRM 0
 #define STATUS_OK 1
+#define STATUS_EMEGENCY 2
 #define STATUS_NOTUPDATE -1
 #define NRF24DEBUG true
 
@@ -102,6 +103,10 @@ public:
 		nrf24Message.setStatus(STATUS_CONFIRM);
 		sendMessage(nrf24Message);
 	}
+	void sendMessageEmegency(NRF24Message nrf24Message) {
+		nrf24Message.setStatus(STATUS_EMEGENCY);
+		sendMessage(nrf24Message);
+	}	
 	NRF24Message getNRF24Message() {
 		return nrf24Message;
 	}

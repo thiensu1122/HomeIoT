@@ -13,18 +13,24 @@
  * A0 --> A7
 	DHT11 --> pin D2
 	GRB led -> PIN D3,D5,D6
-
+	
 */
 
-#define RGBLEDDeviceCode 1
+#define INTERVAL_UPDATE 3000
+#define INTERVAL_EMEGENCY 1000
+
+#define DeviceCode_DHT11 0
+#define DeviceCode_RGBLED 1
+#define DeviceCode_MQ135 2
 
 NRF24 nrf24 = NRF24();
 uint16_t device_id = 1;
-uint8_t device_code = 1;
+uint8_t device_code = 2;
 long lastUpdateInfo = 0;
 NRF24Message nrf24Message;
 DHTHome dht11;
 RGBLED rgbLED;
+SensorMQ135 sensorMQ135;
 void readEEPROM() {
 	unsignedIntAsBytes.bval[0] = EEPROM.read(0);
 	unsignedIntAsBytes.bval[1] = EEPROM.read(1);
@@ -42,8 +48,9 @@ void setup()
 	nrf24Message = NRF24Message(device_id);
 	nrf24Message.setDeviceCode(device_code);
 	nrf24.setupNRF();
-	if(device_code == 0) dht11.setupDHT();
-	if(device_code == 1) rgbLED.setup();
+	if(device_code == DeviceCode_DHT11) dht11.setupDHT();
+	if(device_code == DeviceCode_RGBLED) rgbLED.setup();
+	if(device_code == DeviceCode_MQ135) sensorMQ135.setup();
 }
 
 
@@ -53,21 +60,30 @@ void loop()
 	long timepassed = millis() - lastUpdateInfo;
 	if(timepassed  >= 3000) {
 		lastUpdateInfo = millis();
-		if(device_code == 0) dht11.getTempAndHumi(nrf24Message);
-		if(device_code == 1) rgbLED.getColors(nrf24Message);
+		if(device_code == DeviceCode_DHT11) dht11.getTempAndHumi(nrf24Message);
+		if(device_code == DeviceCode_RGBLED) rgbLED.getColors(nrf24Message);
 		//nrf24Message.debugData();
 		//nrf24Message.printData();
 		nrf24.sendMessage(nrf24Message);
 
 	}
+	//incase of MQ135 we have emergency. therefore, we sample every 500ms.
+	if(device_code == DeviceCode_MQ135){
+		//return true mean it is emegency else just update nrf24Message as normal
+		if(sensorMQ135.loopMQ135(INTERVAL_EMEGENCY, nrf24Message)){
+			nrf24.sendMessageEmegency(nrf24Message);
+		}
+	}
 	if(nrf24.NRFLoop()) {
+		////// when there are nrf24 message from Nodemcu.
 		if(nrf24.getNRF24Message().getDeviceID() == device_id && nrf24.getNRF24Message().getDeviceCode() == device_code) {
 			//nrf24.getNRF24Message().printData();
-			if (nrf24.getNRF24Message().getDeviceCode() == RGBLEDDeviceCode){
+			if (nrf24.getNRF24Message().getDeviceCode() == DeviceCode_RGBLED){
 				rgbLED.setColors(nrf24.getNRF24Message());
 				rgbLED.getColors(nrf24Message);
 				nrf24.sendMessageConfirm(nrf24Message);
 			}
+			
 			
 		}
 	}

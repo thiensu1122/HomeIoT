@@ -206,6 +206,11 @@ public:
 			value3[i] = newValue3[i];
 		}
 	}
+	void setValue3(byte *newValue3,uint8_t begin, uint8_t end) {
+		for(int i =0; i< end - begin +1; i++) {
+			value3[i+begin] = newValue3[i];
+		}
+	}
 	size_t getValue3Size(){
 		return sizeof(value3);
 	}
