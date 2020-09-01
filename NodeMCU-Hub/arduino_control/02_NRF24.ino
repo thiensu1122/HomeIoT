@@ -10,6 +10,9 @@
 
 #define ARDUINOTONODEMCUCHANNEL 1
 #define NODEMCUTOARDUINOCHANNEL 2
+#define STATUS_CONFIRM 0
+#define STATUS_OK 1
+#define STATUS_NOTUPDATE -1
 #define NRF24DEBUG true
 
 class NRF24 {
@@ -57,7 +60,7 @@ public:
 			uint8_t buf[32];
 			memset(buf,0,sizeof(buf));
 			radio.read(buf, sizeof(DataPackage));
-			
+
 			// Send a reply
 			DataPackage dataPackage;
 			memcpy( &dataPackage, buf, sizeof( DataPackage ) );
@@ -94,11 +97,10 @@ public:
 		radio.write(&message, sizeof(DataPackage));
 		delay(5);
 		radio.startListening();
-
-
-
-
-
+	}
+	void sendMessageConfirm(NRF24Message nrf24Message) {
+		nrf24Message.setStatus(STATUS_CONFIRM);
+		sendMessage(nrf24Message);
 	}
 	NRF24Message getNRF24Message() {
 		return nrf24Message;

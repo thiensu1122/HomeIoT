@@ -14,9 +14,8 @@
 const char* ssid = "Bao2G";
 const char* password = "bao0123456";
 NRF24Message nrf24MessageList[10];
-NRF24Message nrf24Message;
 MQTTMessage mqttmessage;
-
+NRF24Message nrf24Message;
 NRF24 nrf24 = NRF24();
 MQTT mqtt = MQTT();
 int gatewayID = EEPROM.read(0);
@@ -57,7 +56,7 @@ void updateMessageList() {
 
 void clearMessageListStatus() {
 	for (int i = 0; i< devicesCount ; i++) {
-		nrf24MessageList[i].setStatus(-1);
+		nrf24MessageList[i].setStatus(STATUS_NOTUPDATE);
 	}
 }
 
@@ -96,7 +95,11 @@ void loop()
 	}
 	if(nrf24.NRFLoop()) {
 		//got message from devices or sensors
-		nrf24Message = nrf24.getNRF24Message();
+		NRF24Message nrf24Message = nrf24.getNRF24Message();
+		if(nrf24Message.getStatus() == STATUS_CONFIRM){
+			mqtt.sendConfirmMessages(nrf24Message);
+		}
+		nrf24Message.setStatus(STATUS_OK);
 		updateMessageList();
 	}
 }

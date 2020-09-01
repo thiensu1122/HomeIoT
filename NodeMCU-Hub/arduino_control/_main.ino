@@ -66,6 +66,7 @@ void loop()
 			if (nrf24.getNRF24Message().getDeviceCode() == RGBLEDDeviceCode){
 				rgbLED.setColors(nrf24.getNRF24Message());
 				rgbLED.getColors(nrf24Message);
+				nrf24.sendMessageConfirm(nrf24Message);
 			}
 			
 		}

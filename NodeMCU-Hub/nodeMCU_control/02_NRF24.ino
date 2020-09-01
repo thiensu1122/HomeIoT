@@ -2,9 +2,18 @@
 #include <nRF24L01.h>
 #include <RF24.h>
 
+//MISO connects to pin 12 of the Arduino Nano
+//MOSI connects to pin 11 of the Arduino Nano
+//SCK connects to pin 13 of the Arduino Nano
+//CE connects to pin 7 of the Arduino Nano
+//CSN connects to pin 8 of the Arduino Nano
+
 #define ARDUINOTONODEMCUCHANNEL 1
 #define NODEMCUTOARDUINOCHANNEL 2
-#define NRF24DEBUG false
+#define STATUS_CONFIRM 0
+#define STATUS_OK 1
+#define STATUS_NOTUPDATE -1
+#define NRF24DEBUG true
 
 class NRF24 {
 private:
@@ -51,7 +60,7 @@ public:
 			uint8_t buf[32];
 			memset(buf,0,sizeof(buf));
 			radio.read(buf, sizeof(DataPackage));
-			
+
 			// Send a reply
 			DataPackage dataPackage;
 			memcpy( &dataPackage, buf, sizeof( DataPackage ) );
@@ -88,11 +97,10 @@ public:
 		radio.write(&message, sizeof(DataPackage));
 		delay(5);
 		radio.startListening();
-
-
-
-
-
+	}
+	void sendMessageConfirm(NRF24Message nrf24Message) {
+		nrf24Message.setStatus(STATUS_CONFIRM);
+		sendMessage(nrf24Message);
 	}
 	NRF24Message getNRF24Message() {
 		return nrf24Message;

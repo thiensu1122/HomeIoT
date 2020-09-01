@@ -13,12 +13,15 @@
 #define MQTTSERVER "server"
 #define MQTTDEVICE "device"
 
-#define UPDATEALLDEVICESSTATUS 100
-#define UPDATESINGLEDEVICESTATUS 101
-#define ALLDEVICESMESSAGE "ALL DEVICES"
-#define HUBTOSERVER "0"
+#define DIRECTIONCODE_HUBTOSERVER 0
+#define DIRECTIONCODE_HUBTOANDROID 1
 #define TEMPSENSOR "52"
 #define CO2SENSOR "53"
+
+
+#define MESSAGECODE_UPDATEALLDEVICESSTATUS 100
+#define MESSAGECODE_UPDATESINGLEDEVICESTATUS 101
+#define MESSAGECODE_CONFIRM 500
 
 #define SERVERTOHUB 3
 #define ANDROIDTOHUB 5
@@ -113,12 +116,12 @@ public:
 //		return message;
 //	}
 
-	String createMessage(NRF24Message nrf24Message) {
-		String message;
+	String createMessage(NRF24Message nrf24Message, int messageCode, int directionCode) {
+		String message="";
 		StaticJsonDocument<mqttBuffer> jsonDoc;
-		jsonDoc["code"] = UPDATESINGLEDEVICESTATUS;
-		jsonDoc["message"] = ALLDEVICESMESSAGE;
-		jsonDoc["direcionCode"] = 0;
+		jsonDoc["code"] = messageCode;
+		jsonDoc["message"] = message;
+		jsonDoc["direcionCode"] = directionCode;
 		JsonArray arraySensorData = jsonDoc.createNestedArray("deviceList");
 
 		StaticJsonDocument<500> jsonSensor;
@@ -155,7 +158,7 @@ public:
 			lastUpdateInfo = millis();
 			String message = "";
 			for(int i=0; i< listCount; i++) {
-				message = createMessage(nrf24MessageList[i]);
+				message = createMessage(nrf24MessageList[i],MESSAGECODE_UPDATESINGLEDEVICESTATUS,DIRECTIONCODE_HUBTOSERVER);
 				//Serial.println(message);
 				publicMessage(message);
 				delay(10);
@@ -163,6 +166,16 @@ public:
 			return true;
 		}
 		return false;
+	}
+
+	void sendConfirmMessages(NRF24Message nrf24Message){
+		String message = "";
+		message = createMessage(nrf24Message,MESSAGECODE_CONFIRM,DIRECTIONCODE_HUBTOSERVER);
+		publicMessage(message);
+		delay(10);
+		message = createMessage(nrf24Message,MESSAGECODE_CONFIRM,DIRECTIONCODE_HUBTOANDROID);
+		publicMessage(message);
+		delay(10);
 	}
 
 	void mqttLoop() {
