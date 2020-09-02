@@ -29,7 +29,7 @@
 
 NRF24 nrf24 = NRF24();
 uint16_t device_id = 1;
-uint8_t device_code = DeviceCode_RELAY;
+uint8_t device_code = DeviceCode_MQ135;
 long lastUpdateInfo = 0;
 NRF24Message nrf24Message;
 DHTHome dht11;

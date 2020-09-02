@@ -4,6 +4,7 @@ import MQTT.DeviceStatusCode;
 import Utility.Utility;
 
 import java.util.Date;
+import java.util.List;
 
 public class Device {
     int device_id;
@@ -11,7 +12,7 @@ public class Device {
     String description;
     float value1;
     float value2;
-    String value3;
+    byte[] value3;
     Date last_send;
     int status;
     int device_code;
@@ -71,11 +72,11 @@ public class Device {
         this.value2 = value2;
     }
 
-    public String getValue3() {
+    public byte[] getValue3() {
         return value3;
     }
 
-    public void setValue3(String value3) {
+    public void setValue3(byte[] value3) {
         this.value3 = value3;
     }
 
@@ -102,4 +103,5 @@ public class Device {
     public void setIs_connected(boolean is_connected) {
         this.is_connected = is_connected;
     }
+
 }

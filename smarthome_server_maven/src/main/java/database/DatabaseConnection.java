@@ -208,7 +208,7 @@ public class DatabaseConnection {
                 preparedStatement.setInt(1, device.getStatus());
                 preparedStatement.setFloat(2, device.getValue1());
                 preparedStatement.setFloat(3, device.getValue2());
-                preparedStatement.setString(4, device.getValue3());
+                preparedStatement.setBytes(4, device.getValue3());
                 preparedStatement.setBoolean(5, device.getIs_connected());
                 preparedStatement.setInt(6, (device.getDevice_id()));
                 preparedStatement.executeUpdate();
@@ -319,7 +319,7 @@ public class DatabaseConnection {
                     device.setValue2(Float.parseFloat(mapdevice.get("value2").toString()));
                 }
                 if(mapdevice.get("value3") != null){
-                    device.setValue3((mapdevice.get("value3").toString()));
+                    device.setValue3((mapdevice.get("value3").toString()).getBytes());
                 }
                 if(mapdevice.get("is_connected") != null){
                     device.setIs_connected(Boolean.parseBoolean(mapdevice.get("is_connected").toString()));
@@ -359,7 +359,7 @@ public class DatabaseConnection {
                     device.setValue2(Float.parseFloat(mapdevice.get("value2").toString()));
                 }
                 if(mapdevice.get("value3") != null){
-                    device.setValue3((mapdevice.get("value3").toString()));
+                    device.setValue3((mapdevice.get("value3").toString()).getBytes());
                 }
                 if(mapdevice.get("is_connected") != null){
                     device.setIs_connected(Boolean.parseBoolean(mapdevice.get("is_connected").toString()));
