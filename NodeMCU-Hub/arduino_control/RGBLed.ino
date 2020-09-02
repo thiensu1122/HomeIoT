@@ -1,8 +1,8 @@
 /*
  	Wiring pin:
  	D3 - 3 -> RED
- 	D4 - 5 -> Green
- 	D5 - 6 -> Blue
+ 	D5 - 5 -> Green
+ 	D6 - 6 -> Blue
 */
 class RGBLED {
 private:
