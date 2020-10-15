@@ -29,6 +29,8 @@
 
 #define MESSAGECODE_CONTROLDEVICE 200
 
+#define qosLevel 1
+
 
 class MQTT {
 private:
@@ -51,7 +53,7 @@ public:
 		mqttClient.setServer(mqttServer, mqttPort);
 		mqttClient.setCallback(&callback);
 		mqttClient.setBufferSize(mqttBuffer);
-
+		
 		while (!mqttClient.connected()) {
 			Serial.println("Connecting to MQTT...");
 
@@ -63,7 +65,7 @@ public:
 				delay(2000);
 			}
 		}
-		mqttClient.subscribe(HomeIotTopic.c_str());
+		mqttClient.subscribe(HomeIotTopic.c_str(), qosLevel);
 
 		//[todo] make led blink for mqtt status.....
 	}
